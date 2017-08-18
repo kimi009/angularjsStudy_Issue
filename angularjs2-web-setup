@@ -1,0 +1,45 @@
+angularjs2-web 搭建流程
+    1.  首先找到合适的脚手架一般用angular-seed           git clone https://github.com/angular-programming/angular-seed.git frontend --depth 1
+        选用该脚手架的目的是它遵循了angular官方最佳实践，
+        支持国际化标准
+        支持静态编译
+        支持开发和生产两种环境
+        支持自动前缀补齐（autoprefixer)和css-lint
+        使用jasmine和karma单元测试
+        使用protractor 进行端对端测试
+        使用livereload/browser-sync实时监控文件变化并重新加载
+        使用typescript 开发
+        使用@types管理类型定义文件
+    2.  npm install
+        这时候可能会遇到下面的错误
+              Node.js 安装模块遇到 MSBUILD : error MSB3428: 未能加载 Visual C++ 组件“VCBuild.exe”。要解决此问题，
+              1) 安装 .NET Framework 2.0 SDK；
+              2) 安装 Microsoft Visual Studio 2005；
+              或 3) 如果将该组件安装到了其他位置，请将其位置添加到系统路径中。 gyp ERR! stack Error
+        碰到上面的错误解决方法  http://blog.csdn.net/notejs/article/details/49681649
+        
+    3.  npm start 可以测试
+    4.  引入样式库  ng2-bootstrap
+            首先安装ng2-bootstrap           npm install ng2-bootstrap --save
+            修改工程配置信息    /tools/config/project.config.ts
+            this.NPM_DEPENDENCIES = [ {src:'ng2-bootstrap/bundles/ng2-bootstrap.umd.min.js',inject:'libs'}]
+            除此之外还需要配置一个第三方库路径
+              this.APP_ASSETS = [{src:'${this.CSS_SRC}/libs/bootstrap.min.css',inject:true,vendor:false}];
+            上面的配置都完事后就可以用ng2-bootstrap组件了
+              用法一： import {TabsModule} from 'ng2-bootstrap/components/tabs'
+              用法二： import {TabsModule} from 'ng2-bootstrap/ng2-bootstrap'
+              推荐使用方法一  ，因为第二种导入有可能会把bootstrap的入口文件导入，其中里面包含了时间相关的组件，这些组件依赖于moment组件
+               需要安装moment组件 npm install moment --save
+搭建后台服务：
+  正式环境可以采用nodejs + mongodb ...
+  测试环境可以按照下面的方法：
+      1. mkdir backend && cd backend
+      2. npm init 
+      3. npm install --save json-server body-parser lowdb@0.12.2
+            body-parser  是服务器node的常用中间件，主要是解析请求体的内容，之后就可以在业务代码中通过req.body的方式读取请求体的内容
+            lowdb    是基于node 的纯json文件数据库
+            之后将package.json里面的main  入口文件修改为app.js
+      4. node app.js
+            
+            
+            
